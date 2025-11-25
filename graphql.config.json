@@ -1,4 +1,4 @@
 {
-  "schema": "https://supreme-space-waddle-77vgp4r7wwfpq7x-3000.app.github.dev/graphql",
+  "schema": "https://crispy-potato-9grv5qvp4qx2xvpg-3000.app.github.dev/graphql",
   "documents": "src/api/graphql/**/*.{js,jsx}"
 }

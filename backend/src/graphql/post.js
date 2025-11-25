@@ -4,6 +4,8 @@ type Post {
             id: ID!
             title: String!
             author: User
+            image: String
+            ingredient: [String!]
             contents: String
             tags: [String!]
             createdAt: Float
