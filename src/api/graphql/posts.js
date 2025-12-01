@@ -10,6 +10,8 @@ export const POST_FIELDS = gql`
     tags
     updatedAt
     createdAt
+    likesCount
+    likedByMe
     author {
       username
     }
@@ -30,6 +32,16 @@ export const GET_POSTS_BY_AUTHOR = gql`
   query getPostsByAuthor($author: String!, $options: PostsOptions) {
     postsByAuthor(username: $author, options: $options) {
       ...PostFields
+    }
+  }
+`
+
+export const TOGGLE_LIKE_POST = gql`
+  mutation toggleLikePost($postId: ID!) {
+    toggleLikePost(postId: $postId) {
+      id
+      likesCount
+      likedByMe
     }
   }
 `

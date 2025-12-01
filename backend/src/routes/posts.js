@@ -2,6 +2,7 @@ import {
   listAllPosts,
   listPostsByAuthor,
   listPostsByTag,
+  listPostsbyLikes,
   createPost,
   updatePost,
   deletePost,
@@ -12,7 +13,7 @@ import { requireAuth } from '../middleware/jwt.js'
 
 export function postsRoutes(app) {
   app.get('/api/v1/posts', async (req, res) => {
-    const { sortBy, sortOrder, author, tag } = req.query
+    const { sortBy, sortOrder, author, tag, likes } = req.query
     const options = { sortBy, sortOrder }
     try {
       if (author && tag) {
@@ -23,6 +24,8 @@ export function postsRoutes(app) {
         return res.json(await listPostsByAuthor(author, options))
       } else if (tag) {
         return res.json(await listPostsByTag(tag, options))
+      } else if (likes === 'true') {
+        return res.json(await listPostsbyLikes(options))
       } else {
         return res.json(await listAllPosts(options))
       }

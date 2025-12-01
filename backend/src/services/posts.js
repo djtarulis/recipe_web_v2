@@ -27,6 +27,15 @@ export async function listAllPosts(options) {
   return await listPosts({}, options)
 }
 
+export async function listPostsbyLikes(options = {}) {
+  const mergedOptions = {
+    sortBy: 'likesCount',
+    sortOrder: 'descending',
+    ...options,
+  }
+  return await listPosts({}, mergedOptions)
+}
+
 export async function listPostsByAuthor(authorUsername, options) {
   const user = await User.findOne({ username: authorUsername })
   if (!user) return []
@@ -55,4 +64,28 @@ export async function updatePost(
 
 export async function deletePost(userId, postId) {
   return await Post.deleteOne({ _id: postId, author: userId })
+}
+
+export async function toggleLikePost(userId, postId) {
+  const post = await Post.findById(postId)
+  if (!post) {
+    throw new Error('Post not found')
+  }
+
+  const userIdStr = userId.toString()
+
+  const alreadyLiked = post.likes.some((id) => id.toString() === userIdStr)
+
+  if (alreadyLiked) {
+    // unlike
+    post.likes = post.likes.filter((id) => id.toString() !== userIdStr)
+  } else {
+    // like
+    post.likes.push(userId)
+  }
+
+  post.likesCount = post.likes.length
+  await post.save()
+
+  return post
 }
