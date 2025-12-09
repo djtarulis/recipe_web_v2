@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { User } from './User.jsx'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
 import {
   TOGGLE_LIKE_POST,
@@ -34,6 +34,11 @@ export function Post({
   // Local state for LIKE UI only
   const [localLiked, setLocalLiked] = useState(likedByMe)
   const [localCount, setLocalCount] = useState(likesCount)
+
+  useEffect(() => {
+    setLocalLiked(likedByMe)
+    setLocalCount(likesCount)
+  }, [token, id])
 
   const [toggleLike] = useGraphQLMutation(TOGGLE_LIKE_POST, {
     variables: { postId: id },
@@ -103,19 +108,25 @@ export function Post({
         </ul>
       )}
 
-      {fullPost && (
-        <div style={{ marginTop: '8px' }}>
-          <button
-            type='button'
-            onClick={handleLikeClick}
-            disabled={!token}
-            style={{ marginRight: '8px' }}
-          >
-            {localLiked ? 'Unlike' : 'Like'} ({localCount ?? 0})
-          </button>
-          {!token && <small>Log in to like this post.</small>}
-        </div>
-      )}
+      <div style={{ marginTop: '8px' }}>
+        {fullPost ? (
+          <>
+            <button
+              type='button'
+              onClick={handleLikeClick}
+              disabled={!token}
+              style={{ marginRight: '8px' }}
+            >
+              {localLiked ? 'Unlike' : 'Like'} ({localCount ?? 0})
+            </button>
+            {!token && <small>Log in to like this post.</small>}
+          </>
+        ) : (
+          <small>
+            {localCount ?? 0} {localCount === 1 ? 'like' : 'likes'}
+          </small>
+        )}
+      </div>
 
       {author && (
         <em>

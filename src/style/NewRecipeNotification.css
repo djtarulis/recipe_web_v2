@@ -1,0 +1,150 @@
+.new-recipe-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.new-recipe-notification:hover {
+  transform: translateY(-2px);
+}
+
+.new-recipe-notification:active {
+  transform: translateY(0);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 16px 20px;
+  min-width: 300px;
+  max-width: 400px;
+  border-left: 4px solid #4caf50;
+  transition: box-shadow 0.2s ease;
+}
+
+.new-recipe-notification:hover .notification-content {
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.notification-icon {
+  font-size: 24px;
+}
+
+.notification-header h3 {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  z-index: 1;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.notification-title {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  padding-left: 36px;
+}
+
+.notification-time {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+  padding-left: 36px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .notification-content {
+    background: #2d2d2d;
+    border-left-color: #66bb6a;
+  }
+
+  .notification-header h3 {
+    color: #f0f0f0;
+  }
+
+  .notification-title {
+    color: #d0d0d0;
+  }
+
+  .notification-time {
+    color: #999;
+  }
+
+  .close-btn {
+    color: #888;
+  }
+
+  .close-btn:hover {
+    color: #f0f0f0;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .new-recipe-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+  }
+
+  .notification-content {
+    min-width: auto;
+    max-width: none;
+  }
+}
+
+/* Accessibility - Focus state */
+.new-recipe-notification:focus {
+  outline: 2px solid #4caf50;
+  outline-offset: 2px;
+}
+
+.new-recipe-notification:focus:not(:focus-visible) {
+  outline: none;
+}

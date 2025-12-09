@@ -1,5 +1,6 @@
 import { Post } from '../db/models/post.js'
 import { User } from '../db/models/user.js'
+import { broadcastNewRecipe } from '../socket.js'
 
 export async function createPost(
   userId,
@@ -13,7 +14,11 @@ export async function createPost(
     contents,
     tags,
   })
-  return await post.save()
+  const savedPost = await post.save()
+  // Broadcast new recipe to all connected clients
+  broadcastNewRecipe(savedPost)
+
+  return savedPost
 }
 
 async function listPosts(

@@ -8,6 +8,9 @@ import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { typeDefs, resolvers } from './graphql/index.js'
 import { optionalAuth } from './middleware/jwt.js'
+import { Server } from 'socket.io'
+import { handleSocket } from './socket.js'
+import { createServer } from 'node:http'
 
 const apolloServer = new ApolloServer({
   typeDefs,
@@ -37,4 +40,15 @@ eventRoutes(app)
 app.get('/', (req, res) => {
   res.send('Hello from Express Nodemon!')
 })
-export { app }
+
+const server = createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+})
+handleSocket(io)
+
+export { server as app }
+
+// export { app }

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { HelmetProvider } from 'react-helmet-async'
 import { ApolloProvider } from '@apollo/client/react/index.js'
 import { ApolloClient, InMemoryCache } from '@apollo/client/core/index.js'
+import { SocketIOContextProvider } from './contexts/SocketIOContext.jsx'
+import { NewRecipeNotification } from './components/NewRecipeNotification.jsx'
 
 const apolloClient = new ApolloClient({
   uri: import.meta.env.VITE_GRAPHQL_URL,
@@ -17,7 +19,14 @@ export function App({ children }) {
     <HelmetProvider>
       <ApolloProvider client={apolloClient}>
         <QueryClientProvider client={queryClient}>
-          <AuthContextProvider>{children}</AuthContextProvider>
+          <AuthContextProvider>
+            <SocketIOContextProvider>
+              <>
+                <NewRecipeNotification />
+                {children}
+              </>
+            </SocketIOContextProvider>
+          </AuthContextProvider>
         </QueryClientProvider>
       </ApolloProvider>
     </HelmetProvider>
